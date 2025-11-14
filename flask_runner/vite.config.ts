@@ -11,7 +11,7 @@ export default defineConfig({
     })
   ],
   build: {
-    outDir: "dist-front"
+    outDir: "dist-react"
   },
   base: './'
 })
