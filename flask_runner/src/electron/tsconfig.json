@@ -11,6 +11,7 @@
     // ignore errors from dependencies
     "skipLibCheck": true,
     // add global types
-   // "types": ["../../types"]
+    // dont add .d.ts leave this as is
+    "types": ["../../types"]
   }
 }
