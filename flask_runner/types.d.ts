@@ -16,6 +16,7 @@ type View = 'CPU' | 'RAM' | 'STORAGE';
 
 type FrameWindowAction = 'CLOSE' | 'MAXIMIZE' | 'MINIMIZE';
 
+// mapping types
 type EventPayloadMapping = {
     statistics: Statistics;
     getStaticData: StaticData;
