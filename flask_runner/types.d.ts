@@ -1,4 +1,5 @@
 // all types we share between front and back end
+// this is essentially a contract between the front and back end for types
 
 type Statistics = {
     cpuUsage: number;

@@ -1,23 +1,47 @@
-import { ipcMain, WebContents } from "electron"
+import { ipcMain, WebContents, WebFrameMain } from 'electron';
+import { getUIPath } from './pathResolver.js';
+import { pathToFileURL } from 'url';
 
 export function isDev(): boolean {
-    return process.env.NODE_ENV == 'development'
+    return process.env.NODE_ENV === 'development';
 }
 
-// payload mapping function
-// ipc main is not type safe automatically but using this wrapper we can make them
-function ipcHandle<Key extends keyof EventPayloadMapping>(key: Key, handler: () => EventPayloadMapping[Key]) {
-    ipcMain.handle(key, () => handler())
+export function ipcMainHandle<Key extends keyof EventPayloadMapping>(
+    key: Key,
+    handler: () => EventPayloadMapping[Key]
+) {
+    ipcMain.handle(key, (event) => {
+        validateEventFrame(event.senderFrame);
+        return handler();
+    });
 }
 
-/**
- * WebContents represents the data inside of the browser eindow
- * this loads and renders the js/html
- */
+export function ipcMainOn<Key extends keyof EventPayloadMapping>(
+    key: Key,
+    handler: (payload: EventPayloadMapping[Key]) => void
+) {
+    ipcMain.on(key, (event, payload) => {
+        validateEventFrame(event.senderFrame);
+        return handler(payload);
+    });
+}
+
 export function ipcWebContentsSend<Key extends keyof EventPayloadMapping>(
     key: Key,
     webContents: WebContents,
     payload: EventPayloadMapping[Key]
 ) {
     webContents.send(key, payload);
+}
+
+// look into this more this can get very complicated fast
+// we are going to need this 
+export function validateEventFrame(frame: WebFrameMain) {
+    if (isDev() && new URL(frame.url).host === 'localhost:5123') {
+        return;
+    }
+    // https://www.geeksforgeeks.org/node-js/node-js-url-pathtofileurl-api/
+    if (frame.url !== pathToFileURL(getUIPath()).toString()) {
+        throw new Error('Malicious event');
+    }
 }
