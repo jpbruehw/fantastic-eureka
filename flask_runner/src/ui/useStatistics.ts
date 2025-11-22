@@ -1,10 +1,23 @@
-import { useEffect } from "react";
+import { useEffect, useState } from 'react';
 
-export function useStatistics(){
+export function useStatistics(dataPointCount: number): Statistics[] {
+    const [value, setValue] = useState<Statistics[]>([]);
+
     useEffect(() => {
-        const unsub = window.electron.subscribeStatistics((stats) => {
-            console.log(stats)
-        })
-        return unsub
-    }, [])
+        const unsub = window.electron.subscribeStatistics((stats) =>
+            setValue((prev) => {
+                const newData = [...prev, stats];
+
+                if (newData.length > dataPointCount) {
+                    newData.shift();
+                }
+
+                return newData;
+            })
+        );
+        return unsub;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    return value;
 }
