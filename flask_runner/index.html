@@ -4,7 +4,13 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>flask_runner</title>
+    <!-- https://content-security-policy.com -->
+    <!-- This line is very important here -->
+    <!-- React uses inline styling so we need this unsafe-inline tag -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'"
+    />
+    <title>Load Viewer</title>
   </head>
   <body>
     <div id="root">

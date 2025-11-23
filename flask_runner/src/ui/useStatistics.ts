@@ -7,7 +7,8 @@ export function useStatistics(dataPointCount: number): Statistics[] {
         const unsub = window.electron.subscribeStatistics((stats) =>
             setValue((prev) => {
                 const newData = [...prev, stats];
-
+                // we add to end of the array
+                // so we can get rid of first item
                 if (newData.length > dataPointCount) {
                     newData.shift();
                 }
