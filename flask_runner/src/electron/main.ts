@@ -4,6 +4,7 @@ import { isDev } from "./util.js";
 import { getStaticData, pollResource } from "./resourceManager.js";
 import { getAssetPath, getPreloadPath, getUIPath } from "./pathResolver.js";
 import { createTray } from "./tray.js";
+import { createMenu } from "./menu.js";
 
 //type test = string;
 
@@ -36,6 +37,8 @@ app.on("ready", () => {
 	// for macOS, you need to use only black and white and the way to differentiate
 	// is with this process.platform thing and for whatever reason darwin means macOS
 	createTray(mainWindow);
+
+	createMenu();
 
 	handleCloseEvents(mainWindow);
 });
