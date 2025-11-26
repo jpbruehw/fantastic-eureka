@@ -23,6 +23,8 @@ app.on("ready", () => {
 		webPreferences: {
 			preload: getPreloadPath(),
 		},
+		// this too is mainly relevant for mac look into this more
+		frame: false,
 	});
 	if (isDev()) {
 		mainWindow.loadURL("http://localhost:5123");
