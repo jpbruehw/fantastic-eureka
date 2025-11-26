@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, Tray } from "electron";
+import { app, BrowserWindow, ipcMain, Menu, Tray } from "electron";
 import path from "path";
 import { isDev } from "./util.js";
 import { getStaticData, pollResource } from "./resourceManager.js";
@@ -6,7 +6,12 @@ import { getAssetPath, getPreloadPath, getUIPath } from "./pathResolver.js";
 import { createTray } from "./tray.js";
 import { createMenu } from "./menu.js";
 
-//type test = string;
+/**
+ * If you want to disable the menu completely you can do so with this line here
+ * this is mainly relevant for mac but still good to know
+ * In most cases, you would want some stuff here
+ */
+//Menu.setApplicationMenu(null);
 
 /**
  * This type of function is present in basically every electron app
@@ -38,7 +43,7 @@ app.on("ready", () => {
 	// is with this process.platform thing and for whatever reason darwin means macOS
 	createTray(mainWindow);
 
-	createMenu();
+	createMenu(mainWindow);
 
 	handleCloseEvents(mainWindow);
 });

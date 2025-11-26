@@ -1,6 +1,7 @@
-import { app, Menu } from "electron";
+import { app, BrowserWindow, Menu } from "electron";
+import { isDev } from "./util.js";
 
-export function createMenu() {
+export function createMenu(mainWindow: BrowserWindow) {
 	Menu.setApplicationMenu(
 		Menu.buildFromTemplate([
 			{
@@ -12,6 +13,11 @@ export function createMenu() {
 					{
 						label: "Quit",
 						click: () => app.quit(),
+					},
+					{
+						label: "DevTools",
+						click: () => mainWindow.webContents.openDevTools(),
+						visible: isDev(),
 					},
 					{
 						label: "View",
