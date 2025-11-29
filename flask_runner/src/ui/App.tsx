@@ -44,16 +44,21 @@ function App() {
 	return (
 		<>
 			<Header />
-			<div className='mainGrid'>
-				<Chart
-					selectedView={activeView}
-					data={activeUsages}
-					maxDataPoints={10}
-				/>
+			<div className='main'>
+				<div></div>
+				<div className='mainGrid'>
+					<Chart
+						selectedView={activeView}
+						data={activeUsages}
+						maxDataPoints={10}
+					/>
+				</div>
 			</div>
 		</>
 	);
 }
+
+function SelectOption() {}
 
 function Header() {
 	return (

@@ -1,8 +1,8 @@
-import { app, BrowserWindow, ipcMain, Menu, Tray } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 //import path from "path";
 import { ipcMainOn, isDev } from "./util.js";
-import { getStaticData, pollResource } from "./resourceManager.js";
-import { getAssetPath, getPreloadPath, getUIPath } from "./pathResolver.js";
+import { getStaticData, pollResources } from "./resourceManager.js";
+import { getPreloadPath, getUIPath } from "./pathResolver.js";
 import { createTray } from "./tray.js";
 import { createMenu } from "./menu.js";
 
@@ -32,7 +32,7 @@ app.on("ready", () => {
 		mainWindow.loadFile(getUIPath());
 	}
 
-	pollResource(mainWindow);
+	pollResources(mainWindow);
 
 	ipcMain.handle("getStatisticData", () => {
 		return getStaticData();
