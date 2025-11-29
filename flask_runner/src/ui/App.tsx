@@ -4,9 +4,7 @@ import { useStatistics } from "./useStatistics";
 import { Chart } from "./Chart";
 
 function App() {
-	useEffect(() => {
-		window.electron.subscribeStatistics((stats) => console.log(stats));
-	});
+	const staticData = useStaticData();
 
 	const [activeView, setActiveView] = useState<View>("CPU");
 
@@ -45,7 +43,33 @@ function App() {
 		<>
 			<Header />
 			<div className='main'>
-				<div></div>
+				<div>
+					<SelectOption
+						onClick={() => setActiveView("CPU")}
+						title='CPU'
+						view='CPU'
+						subTitle={staticData?.cpuModel ?? ""}
+						data={cpuUsages}
+					/>
+					<SelectOption
+						onClick={() => setActiveView("RAM")}
+						title='RAM'
+						view='RAM'
+						subTitle={
+							(staticData?.totalMemoryGB.toString() ?? "") + " GB"
+						}
+						data={ramUsages}
+					/>
+					<SelectOption
+						onClick={() => setActiveView("STORAGE")}
+						title='STORAGE'
+						view='STORAGE'
+						subTitle={
+							(staticData?.totalStorage.toString() ?? "") + " GB"
+						}
+						data={storageUsages}
+					/>
+				</div>
 				<div className='mainGrid'>
 					<Chart
 						selectedView={activeView}
@@ -58,7 +82,32 @@ function App() {
 	);
 }
 
-function SelectOption() {}
+function SelectOption(props: {
+	title: string;
+	view: View;
+	subTitle: string;
+	data: number[];
+	onClick: () => void;
+}) {
+	return (
+		<button
+			className='selectOption'
+			onClick={props.onClick}
+		>
+			<div className='selectOptionTitle'>
+				<div>{props.title}</div>
+				<div>{props.subTitle}</div>
+			</div>
+			<div className='selectOptionChart'>
+				<Chart
+					selectedView={props.view}
+					data={props.data}
+					maxDataPoints={10}
+				/>
+			</div>
+		</button>
+	);
+}
 
 function Header() {
 	return (
@@ -77,6 +126,20 @@ function Header() {
 			/>
 		</header>
 	);
+}
+
+function useStaticData() {
+	const [staticData, setStaticData] = useState<StaticData | null>(null);
+	// An IIFE (Immediately Invoked Function Expression) is an idiom in which a JavaScript function runs as soon as it is defined.
+	// It is also known as a self-executing anonymous function.
+	// https://developer.mozilla.org/en-US/docs/Glossary/IIFE
+	useEffect(() => {
+		(async () => {
+			setStaticData(await window.electron.getStaticData());
+		})();
+	}, []);
+
+	return staticData;
 }
 
 export default App;

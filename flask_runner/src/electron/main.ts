@@ -34,7 +34,7 @@ app.on("ready", () => {
 
 	pollResources(mainWindow);
 
-	ipcMain.handle("getStatisticData", () => {
+	ipcMain.handle("getStaticData", () => {
 		return getStaticData();
 	});
 
