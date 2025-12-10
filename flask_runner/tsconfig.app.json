@@ -6,7 +6,7 @@
 		"lib": ["ES2022", "DOM", "DOM.Iterable"],
 		"module": "ESNext",
 		// what is this vite/client thing
-		// dont add .d.ts for types here either
+		// don't add .d.ts for types here either
 		"types": ["vite/client", "./types"],
 		"skipLibCheck": true,
 		"baseUrl": "./",
